@@ -13,6 +13,7 @@ export const useGetPostList = (params: TPaginatedRequest<TPostFilter>) => {
       let builder = supabase
         .from("blog_posts")
         .select("*", { count: "exact" })
+        .order("created_at", { ascending: false })
         .range(start, end)
 
       if (!!params.filter?.search) {

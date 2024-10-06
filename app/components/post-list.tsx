@@ -13,6 +13,7 @@ import PaginationPostList from "./pagination"
 import useMutableSearchParams from "@/hooks/utils/param"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 const PostList = () => {
   const searchParam = useMutableSearchParams()
@@ -30,24 +31,26 @@ const PostList = () => {
     <>
       <div className="mt-4 flex flex-1 flex-col gap-4">
         {data?.data.map((post) => (
-          <Card key={post.id}>
-            <CardHeader>
-              <CardTitle>{post.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{post.summary}</p>
-            </CardContent>
-            <CardFooter className="flex flex-col items-start justify-start gap-y-4">
-              <div className="flex items-center gap-x-2">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>{post.author}</AvatarFallback>
-                </Avatar>
-                <span>{post.author}</span>
-              </div>
-              <Badge variant="outline">{post.category}</Badge>
-            </CardFooter>
-          </Card>
+          <Link key={post.id} href={`/post/${post.id}`}>
+            <Card>
+              <CardHeader>
+                <CardTitle>{post.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{post.summary}</p>
+              </CardContent>
+              <CardFooter className="flex flex-col items-start justify-start gap-y-4">
+                <div className="flex items-center gap-x-2">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>{post.author}</AvatarFallback>
+                  </Avatar>
+                  <span>{post.author}</span>
+                </div>
+                <Badge variant="outline">{post.category}</Badge>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
       <PaginationPostList lastPage={data?.totalPages ?? 0} />
