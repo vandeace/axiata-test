@@ -17,8 +17,14 @@ import SubmitForm from "./submit-form"
 import ContentForm from "./content-form"
 import PreviewForm from "./preview-form"
 import { useCreatePost } from "@/hooks/api/create-post"
+import { useToast } from "@/hooks/use-toast"
+import Link from "next/link"
+import { ToastAction } from "@/components/ui/toast"
+import { useRouter } from "next/navigation"
 
 const ModalAddForm = () => {
+  const router = useRouter()
+  const { toast } = useToast()
   const [showModal, setShowModal] = React.useState(false)
   const [level, setLevel] = React.useState(0)
 
@@ -49,8 +55,19 @@ const ModalAddForm = () => {
 
   const onSubmit = handleSubmit((data) => {
     mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setShowModal(false)
+        toast({
+          title: "Post Created Successfully",
+          action: (
+            <ToastAction
+              altText="Try again"
+              onClick={() => router.push(`/post/${data.id}`)}
+            >
+              Check The Post
+            </ToastAction>
+          ),
+        })
       },
     })
   })
